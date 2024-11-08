@@ -39,14 +39,14 @@ void menu(){
 	}
  
     do {
-        printf("\n    MENU DE OPÇÕES:    \n");
-        printf("1 -> Cadastrar Usuário \n");
-        printf("2 -> Alterar Usuário \n");
-        printf("3 -> Excluir Usuário \n");
-        printf("4 -> Listar Usuários \n");
+        printf("\n    MENU DE OPÃ‡Ã•ES:    \n");
+        printf("1 -> Cadastrar UsuÃ¡rio \n");
+        printf("2 -> Alterar UsuÃ¡rio \n");
+        printf("3 -> Excluir UsuÃ¡rio \n");
+        printf("4 -> Listar UsuÃ¡rios \n");
         printf("5 -> Voltar para o menu \n");
         printf("0 -> Sair \n");
-        printf("\n Escolha uma opção: ");
+        printf("\n Escolha uma opÃ§Ã£o: ");
         scanf("%d", &opcao);
         while ((c=getchar())!='\n'&&c!=EOF);
        
@@ -54,19 +54,19 @@ void menu(){
        
         switch (opcao) {
             case 1:
-               printf("Digite o nome do usuário: ");
+               printf("Digite o nome do usuÃ¡rio: ");
     		   fgets(nome[tam], 50, stdin);
     		   fprintf(arquivo, "%-50s", nome[tam]);
     		   nome[tam][strcspn(nome[tam], "\n")] = '\0';
     		   
-    		   printf("Digite a senha do usuário: ");
+    		   printf("Digite a senha do usuÃ¡rio: ");
     		   fgets(senha[tam++], 50, stdin);
     		   
-               criptografia(senha[tam-1]);
-               fprintf(arquivo, "%-50s", senha[tam-1]);
+             	   criptografia(senha[tam-1]);
+               	   fprintf(arquivo, "%-50s", senha[tam-1]);
                
-			   printf("Usuário adicionado com sucesso! \n");
-               break;
+		   printf("UsuÃ¡rio adicionado com sucesso! \n");
+                   break;
                
             case 2:
             	printf("Qual o nome do usuario que deseja alterar: ");
@@ -75,74 +75,73 @@ void menu(){
             	
             	for(i = 0; i < tam && strcmp(achanome, nome[i]) != 0; i++);
             	
-				if(i != tam){
-					printf("Digite o novo nome do usuário: ");
-					fgets(nome[i], 50, stdin);
-					printf("Digite a nova senha: ");
-					fgets(senha[i], 50, stdin);
-					criptografia(senha[i]);
-					
-					fseek(arquivo, 0, SEEK_SET);
-					y = 0;
+		if(i != tam){
+			printf("Digite o novo nome do usuÃ¡rio: ");
+			fgets(nome[i], 50, stdin);
+			printf("Digite a nova senha: ");
+			fgets(senha[i], 50, stdin);
+			criptografia(senha[i]);
+						
+			fseek(arquivo, 0, SEEK_SET);
+			y = 0;
             	
             		while(fscanf(arquivo, "%s", x) != EOF){
-    					fscanf(arquivo, "%s", j);
+    				fscanf(arquivo, "%s", j);
     	
-    					if(strcmp(achanome, x) == 0){
-    						fseek(arquivo, y, SEEK_SET);
-    						fprintf(arquivo, "%-50s", nome[i]);
-    						fprintf(arquivo, "%-50s", senha[i]);
-    						fseek(arquivo, 0, SEEK_END);
-    					} else {
-    						y = ftell(arquivo);
-						}
-					}
-				} else {
-					printf("Usuario não encontrado!");
+    				if(strcmp(achanome, x) == 0){
+    					fseek(arquivo, y, SEEK_SET);
+    					fprintf(arquivo, "%-50s", nome[i]);
+    					fprintf(arquivo, "%-50s", senha[i]);
+    					fseek(arquivo, 0, SEEK_END);
+    				} else {
+    					y = ftell(arquivo);
 				}
-				break;
+			}
+		} else {
+			printf("Usuario nÃ£o encontrado!");
+		}
+		break;
                 
             case 3:
             	printf("Digite o nome do usuario que deseja excluir: ");
-				scanf("%s", achanome);
-				while ((c=getchar())!='\n'&&c!=EOF);
+		scanf("%s", achanome);
+		while ((c=getchar())!='\n'&&c!=EOF);
 				
-				for(i = 0; i < tam && strcmp(achanome, nome[i]) != 0; i++);
+		for(i = 0; i < tam && strcmp(achanome, nome[i]) != 0; i++);
 				
-				if(tam != i){
-					for(y = i+1; y < tam; y++){
-						strcpy(nome[y-1], nome[y]);
-						strcpy(senha[y-1], senha[y]);
-					}
-					tam--;
+		if(tam != i){
+			for(y = i+1; y < tam; y++){
+				strcpy(nome[y-1], nome[y]);
+				strcpy(senha[y-1], senha[y]);
+			}
+			tam--;
 					
-					fclose(arquivo);
-					remove("teste-aep.txt");
-					arquivo = fopen("teste-aep.txt", "w+");
+			fclose(arquivo);
+			remove("teste-aep.txt");
+			arquivo = fopen("teste-aep.txt", "w+");
 					
-					for(i = 0; i < tam; i++){
-						fprintf(arquivo, "%-50s", nome[i]);
-						fprintf(arquivo, "%-50s", senha[i]);
-					}
-					
-					printf("Usuário excluido com sucesso!\n");
-				} else {
-					printf("Usuario não encontrado!"); 
-				}
+			for(i = 0; i < tam; i++){
+				fprintf(arquivo, "%-50s", nome[i]);
+				fprintf(arquivo, "%-50s", senha[i]);
+			}		
+			printf("UsuÃ¡rio excluido com sucesso!\n");
+		} else {
+			printf("Usuario nÃ£o encontrado!"); 
+		}
                 break;
                 
             case 4:
-     	  		if (tam == 0) {
-    				printf("\n Nenhum usuário encontrado! \n");
-				} else {
-					printf("\n    LISTA DE USUÁRIOS:    \n");
-					for (int i = 0; i < tam; i++) {
-						strcpy(x, senha[i]);
-						descriptografia(x);
+     	  	if (tam == 0) {
+    			printf("\n Nenhum usuÃ¡rio encontrado! \n");
+		} else {
+			printf("\n    LISTA DE USUÃRIOS:    \n");
+			for (int i = 0; i < tam; i++) {
+				strcpy(x, senha[i]);
+				descriptografia(x);
     		    		printf("\nNome: %s\n", nome[i]);
-    					printf("Senha: %s\n", x);
-    				}
-			    }
+    				printf("Senha: %s\n", x);
+    			}
+		}
                 break;
                 
             case 5:
